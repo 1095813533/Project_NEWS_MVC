@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style-type: none;
+    text-transform: capitalize;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    color: #333333;
+    line-height: 1.4;
+    display: block;
+}

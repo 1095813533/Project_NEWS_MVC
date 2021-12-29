@@ -1,0 +1,52 @@
+﻿
+@using NEWS_MVC.Models
+@model IEnumerable<NEWS_MVC.Models.article>
+<!DOCTYPE html>
+            <div class="main-con">
+                <ul id="new_type" class="newlist">
+                    @{
+                        List<article> newsmodel = Model as List<article>;
+                        int i = 0;
+                        foreach (var news in newsmodel)
+                        {
+                            //var news = list_news_name[i];
+                            //var user = list_user_name[i];
+                            //var time = list_news_time[i];
+                            if ((i + 1) % 4 == 0)
+                            {
+                                <li class="last">
+                                    <a href="" target="_blank">
+                                        <img src=@news.fengmian>
+                                    </a>
+                                    <h2>
+                                        <a href="~/Home/page?articleid=@news.articleid" target="_blank">@news.name</a>
+                                    </h2>
+                                    <h5>
+                                        <div class="author">作者：@news.username</div>
+                                        <div class="post-time">发布时间：@news.newstime</div>
+                                    </h5>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="" target="_blank">
+                                        <img src=@news.fengmian>
+                                    </a>
+                                    <h2>
+                                        <a href="~/Home/page?articleid=@news.articleid" target="_blank">@news.name</a>
+                                    </h2>
+                                    <h5>
+                                        <div class="author">作者：@news.username</div>
+                                        <div class="post-time">发布时间：@news.newstime</div>
+                                    </h5>
+                                </li>
+                            }
+                            i++;
+                        }
+
+                    }
+                </ul>
+            </div>
+            <div class="main-more"></div>
+

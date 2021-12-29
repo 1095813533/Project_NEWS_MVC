@@ -1,0 +1,16 @@
+﻿
+<!--文章内容 start-->
+<style>
+    #article-content {
+        width: 80%;
+        min-height: 200px;
+        margin: 0 auto;
+        background-color: white;
+    }
+</style>
+<div id="article-content">
+</div>
+<script>
+    $("#article-content").load("../../articles/"+ @ViewData["id"] + ".html");
+</script>
+<!--文章内容 end-->

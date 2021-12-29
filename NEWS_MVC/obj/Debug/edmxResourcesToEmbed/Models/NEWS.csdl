@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NEWSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="article">
+    <Key>
+      <PropertyRef Name="articleid" />
+    </Key>
+    <Property Name="articleid" Type="Int32" Nullable="false" />
+    <Property Name="userid" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="40" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="newstime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="priority" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="regtime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="NEWSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="article" EntityType="Self.article" />
+    <EntitySet Name="user" EntityType="Self.user" />
+  </EntityContainer>
+</Schema>

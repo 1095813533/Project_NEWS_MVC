@@ -1,0 +1,441 @@
+﻿
+@using NEWS_MVC.Models
+@model IEnumerable<NEWS_MVC.Models.article>
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>个人管理界面</title>
+
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.16.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script>
+    $.ajax({
+    // 提交类型
+    type: "POST",
+    // 格式
+    dataType: "json",
+    // 提交路径
+    url: "/Home/userpage",
+    async: false,
+    data: {
+    "userid": @Request.Cookies["userid"].Value.ToString(),
+    }
+    })
+    </script>
+    <style type="text/css">
+		body {
+			background-color: rgb(220, 220, 220);
+			padding: 0;
+			margin: 0;
+			font-size: 16px;
+			font-family: sans-serif;
+		}
+
+		.admin-panel {
+			margin-top: 40px;
+			margin-left: 10px;
+		}
+
+		/*slidebar侧边栏*/
+		.slidebar {
+			width: 20%;
+			min-height: 690px;
+			float: left;
+			border-right: 1px solid rgb(235, 235, 235);
+			background-color: rgb(247, 247, 247);
+		}
+
+		.slidebar {
+			height: 145px;
+			border-bottom: 1px solid rgb(235, 235, 235);
+		}
+
+		.slidebar ul {
+			padding: 0;
+			margin: 0;
+		}
+
+		.slidebar li {
+			list-style-type: none;
+			margin: 0;
+			position: relative;
+		}
+
+		.slidebar li:before {
+			content: "";
+			font-family: 'icomoon';
+			speak: none;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			position: absolute;
+			display: block;
+			line-height: 40px;
+			color: rgb(102, 102, 102);
+			right: 20px;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.slidebar ul a {
+			color: rgb(140, 140, 140);
+			text-decoration: none;
+			font: 16px/40px helvetica, verdana, sans-serif;
+			box-sizing: border-box;
+			border-bottom: 1px solid rgb(235, 235, 235);
+			display: block;
+			box-shadow: inset 0 1px 0 rgb(255, 255, 255);
+			text-indent: 20px;
+			text-transform: capitalize;
+		}
+
+		.slidebar li:hover a {
+			background-color: rgb(255, 255, 255);
+			box-shadow: 1px 0 0 rgb(255, 255, 255), inset 5px 0 0 -1px rgb(234, 83, 63);
+		}
+
+		/*main*/
+		.main {
+			float: left;
+			width: 79%;
+			min-height: 690px;
+			background-color: rgb(255, 255, 255);
+			position: relative;
+			font-family: helvetica, verdana, sans-serif;
+		}
+
+		.main h4 {
+			margin-left: 120px;
+		}
+
+		.main .topbar {
+			border-bottom: 1px solid rgb(235, 235, 235);
+			margin: 0;
+			padding: 0;
+		}
+
+		#dashboard>div {
+			border: 1px solid rgb(235, 235, 235);
+			margin-left: 30px;
+			float: left;
+			border-radius: 5px;
+			min-width: 345px;
+			height: 200px;
+			display: inline-block;
+		}
+
+		#news {}
+
+		#new-edit .fixed-table-border {
+			display: none;
+		}
+
+		.quick-press {
+			margin-top: 40px;
+		}
+
+		.quick-press form {
+			margin: 0 20px 0 13px;
+		}
+
+		.quick-press input[type="text"] {
+			display: block;
+			width: 100%;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			height: 35px;
+			line-height: 15px;
+			padding: 10px 0;
+			margin: 0 0 7px 0;
+			background-color: rgb(246, 246, 246);
+			outline: none;
+			border: none;
+			text-indent: 10px;
+		}
+
+		/*统一各浏览器下placeholder内的字体样式*/
+		.quick-press input[type="text"]::-webkit-input-placeholder {
+			font-size: 14px;
+		}
+
+		.quick-press input[type="text"]:-moz-input-placeholder {
+			font-size: 14px;
+		}
+
+		.quick-press input[type="text"]::-moz-input-placeholder {
+			font-size: 14px;
+		}
+
+		.quick-press input[type="text"]:-ms-input-placeholder {
+			font-size: 14px;
+		}
+
+		.quick-press button {
+			margin-top: 13px;
+			border-radius: 5px;
+			text-align: center;
+			line-height: 30px;
+			padding: 0;
+		}
+
+		.quick-press .save,
+		.quick-press .delet {
+			font-family: 'icomoon';
+			width: 37px;
+			background: -webkit-linear-gradient(top, rgb(246, 246, 240), rgb(232, 232, 232));
+			background: -moz-linear-gradient(top, rgb(246, 246, 240), rgb(232, 232, 232));
+			background: -ms-linear-gradient(top, rgb(246, 246, 240), rgb(232, 232, 232));
+			background: linear-gradient(top, rgb(246, 246, 240), rgb(232, 232, 232));
+			border: 1px solid rgb(229, 229, 229);
+			color: rgb(102, 102, 102);
+			float: left;
+			margin-right: 5px;
+		}
+
+		.quick-press .save:hover,
+		.quick-press .delet:hover {
+			background: -webkit-linear-gradient(top, rgb(232, 232, 232), rgb(246, 246, 240));
+			background: -moz-linear-gradient(top, rgb(232, 232, 232), rgb(246, 246, 240));
+			background: -ms-linear-gradient(top, rgb(232, 232, 232), rgb(246, 246, 240));
+			background: linear-gradient(top, rgb(232, 232, 232), rgb(246, 246, 240));
+		}
+
+		.quick-press .save:active,
+		.quick-press .delet:active {
+			background: -webkit-linear-gradient(top, rgb(228, 228, 228), rgb(210, 210, 210));
+			background: -moz-linear-gradient(top, rgb(228, 228, 228), rgb(210, 210, 210));
+			background: -ms-linear-gradient(top, rgb(228, 228, 228), rgb(210, 210, 210));
+			background: linear-gradient(top, rgb(228, 228, 228), rgb(210, 210, 210));
+		}
+
+		.quick-press .submit {
+			float: right;
+			width: 70px;
+			border: 1px solid rgb(238, 85, 64);
+			color: #fff;
+			font-size: 16px;
+			background: -webkit-linear-gradient(top, rgb(245, 101, 82), rgb(234, 83, 63));
+			background: -moz-linear-gradient(top, rgb(245, 101, 82), rgb(234, 83, 63));
+			background: -ms-linear-gradient(top, rgb(245, 101, 82), rgb(234, 83, 63));
+			background: linear-gradient(top, rgb(245, 101, 82), rgb(234, 83, 63));
+		}
+
+		.quick-press .submit:hover {
+			background: -webkit-linear-gradient(top, rgb(220, 85, 70), rgb(210, 65, 53));
+			background: -moz-linear-gradient(top, rgb(220, 85, 70), rgb(210, 65, 53));
+			background: -ms-linear-gradient(top, rgb(220, 85, 70), rgb(210, 65, 53));
+			background: linear-gradient(top, rgb(220, 85, 70), rgb(210, 65, 53));
+		}
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <section class="demo">
+            <div class="admin-panel">
+                <div class="slidebar">
+                    <ul>
+                        <li id="lidashboard"><a style="cursor:pointer">dashboard</a></li>
+                        <li id="linews"><a style="cursor:pointer">news</a></li>
+                    </ul>
+                </div>
+                <div class="main">
+                    <div id="new-edit" hidden>
+                        <table data-toggle="table" data-height="600" data-pagination="true"
+                               data-side-pagination="client" data-page-size="10" id="new_list">
+                            @{
+                                List<article> newsmodel = Model as List<article>;
+                                foreach (var news in newsmodel)
+                                {
+                                    <tr>
+                                        <th>@news.articleid</th>
+                                        <th>@news.name</th>
+                                        <th></th>
+                                    </tr>
+                                    }
+                                }
+                        </table>
+
+                    </div>
+                    <div id="dashboard">
+                        <div class="quick-press">
+                            <h4>密码修改</h4>
+                            <form method="post">
+                                <input id="password1" type="text" name="password1" placeholder="password" />
+                                <input id="password2" type="text" name="password2" placeholder="password" />
+                                <button class="submit" id="password_edit">提交</button>
+                            </form>
+                        </div>
+                        <div class="quick-press">
+                            <h4>邮箱修改</h4>
+                            <form method="post">
+                                <input id="email_input" type="text" name="username" placeholder="username" />
+                                <button class="submit" id="email_edit">提交</button>
+                            </form>
+                        </div>
+                        <div class="quick-press">
+                            <h4>注销</h4>
+                            <form action="~/Home/logout" method="post">
+                                <button type="submit" class="submit" name="email-submit">确认</button>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        $("#password_edit").click(function() {
+                            //window.location.href='https://www.baidu.com/';
+                            if ($("#password1").val() != $("#password2").val()) {
+                                alert("密码不一致");
+                                return;
+                            }
+                            if ($("#password1").val() === '') {
+                                alert('密码不能为空');
+                                return;
+                            }
+                            $.ajax({
+                                // 提交类型
+                                type: "POST",
+                                // 格式
+                                dataType: "json",
+                                // 提交路径
+                                url: "/Home/changePW",
+                                async: false,
+                                data: {
+                                    "userid": @Request.Cookies["userid"].Value.ToString(),
+                                    "password": $("#password1").val(),
+                                },
+                                // 如果提交成功，返回的值为data
+                                success: function (state) {
+                                    if (state === "0") {
+                                        alert("修改失败");
+                                    }
+                                    else {
+                                        alert("修改成功");
+                                    }
+                                },
+                                error: function () {
+                                    alert('error');
+                                }
+                            })
+                        })
+                        $("#email_edit").click(function() {
+                            $.ajax({
+                                // 提交类型
+                                type: "POST",
+                                // 格式
+                                dataType: "json",
+                                // 提交路径
+                                url: "/Home/changeemail",
+                                async: false,
+                                data: {
+                                    "userid": @Request.Cookies["userid"].Value.ToString(),
+                                    "email": $("#email_input").val(),
+                                },
+                                // 如果提交成功，返回的值为data
+                                success: function (state) {
+                                    if (state === "0") {
+                                        alert("修改失败");
+                                    }
+                                    else {
+                                        alert("修改成功");
+                                    }
+                                },
+                                error: function () {
+                                    alert('error');
+                                }
+                            })
+                        })
+                    </script>
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+		$('#lidashboard').click(function () {
+			$('#dashboard').show();
+			$('#new-edit').hide();
+		});
+		$('#linews').click(function () {
+			$('#dashboard').hide();
+			$('#new-edit').show();
+		});
+    </script>
+
+    <script>
+		function addFunctionAlty(value, row, index) {
+			return [
+				//'<button id="bind" type="button" class="btn btn-default">编辑</button>',
+				'<button id="unbind" type="button" class="btn btn-default">删除</button>',
+			].join('');
+		};
+		function contentFormatter(value, row, index) {
+			var content = value;
+				if(value && value.length >50){
+					content = value.substr(0,50)+"..."
+				}
+			return  "<span data-toggle='tooltip' data-html='true'  data-placement=\"top\" title=\""+value+"\">"+content+"</span>" ;
+		}
+		window.operateEvents = {
+			'click #bind': function (e, value, row, index) {
+				alert('编号：' + row["id"]);
+			},
+			'click #unbind': function (e, value, row, index) {
+			    $.ajax({
+			        // 提交类型
+			        type: "POST",
+			        // 格式
+			        dataType: "json",
+			        // 提交路径
+			        url: "/Home/Delete",
+			        async: false,
+			        data: {
+			            "articleid": row["id"],
+			        },
+			        // 如果提交成功，返回的值为data
+			        success: function (article_id) {
+			            if (article_id === "0") {
+			                alert("删除失败");
+			            }
+			            else {
+			                alert("删除成功");
+			                window.location.href = "/Home/userpage";
+			            }
+			        },
+			        error: function () {
+			            alert('error');
+			        }
+			    })
+			}
+		};
+		$('#new_list').bootstrapTable({
+			"search": true,
+			columns: [{
+				field: 'id',
+				title: '编号',
+				width: 100
+			}, {
+				field: 'name',
+				title: '标题',
+				width: 600,
+				formatter:contentFormatter
+			}, {
+				field: 'op',
+				title: '操作',
+				width: 100,
+				events: operateEvents, //给按钮注册事件
+				formatter: addFunctionAlty //表格中增加按钮
+			}]
+		})
+    </script>
+</body>
+
+</html>

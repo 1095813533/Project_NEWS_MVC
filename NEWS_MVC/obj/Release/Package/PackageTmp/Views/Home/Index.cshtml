@@ -1,0 +1,142 @@
+﻿
+@using NEWS_MVC.Models
+@model IEnumerable<NEWS_MVC.Models.article>
+<!DOCTYPE html>
+    <div id="main-content">
+        <main>
+            <!--首页滚动播放窗口-->
+            <div id="main-slide" class="slideBox">
+                <ul class="items">
+                    @{
+                        List<article> newsmodel = Model as List<article>;
+                        //List<string> list_news_name = ViewData["news_name"] as List<string>;
+                        //List<string> list_user_name = ViewData["user_name"] as List<string>;
+                        //List<string> list_news_time = ViewData["news_time"] as List<string>;
+                        int j = 1;
+                        foreach (var news in newsmodel)
+                        {
+                            //var news = list_news_name[i];
+                            //var user = list_user_name[i];
+                            //var time = list_news_time[i];
+                            if (j <= 5)
+                            {
+                                if (@news.priority == 1)
+                                {
+                                    j++;
+                                    <li><a href="~/Home/page?articleid=@news.articleid " title=@news.name><img style="width:800px;height:375px" src=@news.fengmian></a></li>
+                                    }
+
+                                  else
+                                {
+                                    continue;
+                                  }
+                                }
+                            else
+                             {
+                                 break;
+                            }
+                         }
+
+                  }
+                </ul>
+
+            </div>
+            <script>
+                jQuery(function ($) {
+                    $('#main-slide').slideBox({
+
+                        duration: 0.3, //滚动持续时间，单位：秒
+
+                        easing: 'linear', //swing,linear//滚动特效
+
+                        delay: 3, //滚动延迟时间，单位：秒
+
+                        hideClickBar: false, //不自动隐藏点选按键
+
+                        clickBarRadius: 10
+
+                    });
+                });
+            </script>
+
+            <div class="main-top">
+                <!--列表卡片切换-->
+                <div class="main-btn">
+                    <span class="btn_left cur"><a class="fa fa-list" style="cursor:pointer">列表</a></span>
+                    <span class="btn_right"><a class="fa fa-th" style="cursor:pointer">卡片</a></span>
+                </div>
+
+                <!--天气预报-->
+                <iframe class="tianqi" width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true"
+                        src="https://i.tianqi.com/index.php?c=code&id=12&icon=1&num=5&site=12"></iframe>
+
+            </div>
+            <div class="main-con">
+                <ul id="new_type" class="newlist">
+                    @{
+                        //List<string> list_news_name = ViewData["news_name"] as List<string>;
+                        //List<string> list_user_name = ViewData["user_name"] as List<string>;
+                        //List<string> list_news_time = ViewData["news_time"] as List<string>;
+                        int i = 0;
+                        foreach (var news in newsmodel)
+                        {
+                            //var news = list_news_name[i];
+                            //var user = list_user_name[i];
+                            //var time = list_news_time[i];
+                            if ((i + 1) % 4 == 0)
+                            {
+                                <li class="last">
+                                    <a href="~/Home/page?articleid=@news.articleid" target="_blank">
+                                        <img src=@news.fengmian>
+                                    </a>
+                                    <h2>
+                                        <a href="~/Home/page?articleid=@news.articleid" target="_blank">@news.name</a>
+                                    </h2>
+                                    <h5>
+                                        <div class="author">作者：@news.username</div>
+                                        <div class="post-time">发布时间：@news.newstime</div>
+                                    </h5>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="~/Home/page?articleid=@news.articleid" target="_blank">
+                                        <img src=@news.fengmian>
+                                    </a>
+                                    <h2>
+                                        <a href="~/Home/page?articleid=@news.articleid" target="_blank">@news.name</a>
+                                    </h2>
+                                    <h5>
+                                        <div class="author">作者：@news.username</div>
+                                        <div class="post-time">发布时间：@news.newstime</div>
+                                    </h5>
+                                </li>
+                            }
+                            i++;
+                        }
+
+                    }
+                </ul>
+            </div>
+            <div class="main-more"></div>
+        </main>
+    </div>
+
+    <script>
+        var btn_left = document.getElementsByClassName("btn_left");
+        var btn_right = document.getElementsByClassName("btn_right");
+        var new_type = document.getElementById('new_type');
+        $(".btn_left").click(function () {
+            btn_left[0].setAttribute('class', "btn_left cur");
+            btn_right[0].setAttribute('class', "btn_right");
+            new_type.setAttribute('class', 'newlist');
+
+        });
+        $(".btn_right").click(function () {
+            btn_left[0].setAttribute('class', "btn_left");
+            btn_right[0].setAttribute('class', "btn_right cur");
+            new_type.setAttribute('class', 'newcard');
+        });
+    </script>
+

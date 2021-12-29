@@ -1,0 +1,285 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="~/scripts/jquery.min.js"></script>
+    <title>文章编辑</title>
+    <style type="text/css">
+        #container {
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        #toolbar-container {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+            #toolbar-container:after {
+                display: table;
+                content: '';
+                clear: both;
+            }
+
+        #editor-toolbar {
+            float: left;
+        }
+
+        #btn-container {
+            float: right;
+            text-align: right;
+        }
+
+        #editor-text {
+            border: 1px solid #ccc;
+            border-top: 0;
+            height: 300px;
+            background-color: #fff;
+        }
+
+        #cover {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            top: 100px;
+            left: 50px;
+            right: 50px;
+            height: 520px;
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+    </style>
+    <style>
+        #fp-dialog {
+            display: none;
+            position: absolute;
+            top: 15%;
+            left: 40%;
+            width: 300px;
+            height: 100px;
+            padding: 20px;
+            border: 10px solid orange;
+            background-color: white;
+            z-index: 99999;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: inline-block;">
+        <p style="display: inline-block;">文章封面</p>
+        <img id="fp-view" alt="加载失败" src="~/Image/bird.png"
+             style="width: 160px; height: 80px; display: inline-block;">
+    </div>
+    <div style="display: inline-block;">
+        <span style="display: block;">文章标题&nbsp;<input id="biaoti"></span>
+        <span style="display: block;">
+            类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select id="type">
+                <option value="军事">军事</option>
+                <option value="国内">国内</option>
+                <option value="国际">国际</option>
+                <option value="股票">股票</option>
+                <option value="基金">基金</option>
+                <option value="外汇">外汇</option>
+                <option value="NBA">NBA</option>
+                <option value="英超">英超</option>
+                <option value="中超">中超</option>
+                <option value="明星">明星</option>
+                <option value="电影">电影</option>
+                <option value="电视剧">电视剧</option>
+                <option value="手机">手机</option>
+                <option value="探索">探索</option>
+                <option value="众测">众测</option>
+                <option value="报价">报价</option>
+                <option value="买车">买车</option>
+                <option value="新车">新车</option>
+            </select>
+        </span>
+        <span style="display: block;">
+            优先级&nbsp;&nbsp;&nbsp;&nbsp;
+            <select id="priority">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </span>
+    </div>
+
+    <!--非全屏模式-->
+    <div id="container">
+        <!--菜单栏-->
+        <div id="toolbar-container">
+            <div id="editor-toolbar"></div>
+            <div id="btn-container">
+                <button id="btn1">封面图片</button>
+                <!--button id="btn1">全屏</button-->
+                <button id="btn2">获取html</button>
+                <button id="btn3">获取text</button>
+                <button id="btn4">追加内容</button>
+                <button id="btn5">清空内容</button>
+                <button id="btn6">当前时间</button>
+                <button id="btn7">发布</button>
+                <button id="btn8">保存</button>
+            </div>
+        </div>
+        <!--编辑区域-->
+        <div id="editor-text">
+        </div>
+    </div>
+
+    <!--全屏模式-->
+    <div id="cover"></div>
+    <!--首页图片添加窗口-->
+    <div id="fp-dialog">
+        <input id="fp-input" type="text" placeholder="输入图片网址" style="margin: 5px; width: 172px;">
+        <button id="queding1" style="margin: 5px;">确定</button>
+        <hr>
+        <input type="file" name="" id="upload" style="margin: 5px; width: 180px;" accept="image/png, image/jpeg">
+        <button id="queding2" style="margin: 5px;">确定</button>
+        <button id="quxiao" style="margin: 5px; display: block;">取消</button>
+    </div>
+
+    <script type="text/javascript" src="~/scripts/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        // 创建编辑器
+        var E = window.wangEditor
+        var editor = new E('#editor-toolbar', '#editor-text')
+        editor.customConfig.uploadImgShowBase64 = true
+        editor.create()
+
+        // 获取使用到的元素
+        var toolbarContaner = document.getElementById('toolbar-container')
+        var editorText = document.getElementById('editor-text')
+        var cover = document.getElementById('cover')
+        var container = document.getElementById('container')
+        cover.style.display = 'block'
+        editorText.style.height = '460px';
+        cover.appendChild(toolbarContaner)
+        cover.appendChild(editorText)
+        // 获取html
+        document.getElementById('btn2').addEventListener('click', function () {
+            console.log(editor.txt.html())
+            alert(editor.txt.html())
+        }, false)
+        // 获取文本内容
+        document.getElementById('btn3').addEventListener('click', function () {
+            alert(editor.txt.text())
+        }, false)
+
+        // 设置内容
+        // editor.txt.html('<p>通过 js 动态设置的内容</p>')
+
+        // 追加内容
+        document.getElementById('btn4').addEventListener('click', function () {
+            var str = prompt("输入追加的内容：");
+            if (str == null) return;
+            str = '<p>' + str + '</p>';
+            editor.txt.append(str);
+        }, false)
+        document.getElementById('btn5').addEventListener('click', function () {
+            editor.txt.clear()
+        }, false)
+
+        // 当前时间
+        document.getElementById('btn6').addEventListener('click', function () {
+            var date = new Date();
+            var str = '<p>' + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date
+                .getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + '</p>';
+            editor.txt.append(str);
+        }, false)
+        // 发布
+        document.getElementById('btn7').addEventListener('click', function () {
+            var biaoti = $("#biaoti").val();
+            if (biaoti === '') {
+                alert('标题为空');
+                return;
+            }
+            if (first_pircture === '') {
+                alert('封面为空');
+                return;
+            }
+            // 存储并发布文章
+            //console.log(editor.txt.html());
+            $.ajax({
+                // 提交类型
+                type: "POST",
+                // 格式
+                dataType: "json",
+                // 提交路径
+                url: "/Home/Insert",
+                async: false,
+                data: {
+                    "userid": @Request.Cookies["userid"].Value.ToString(),
+                    "username" : "@Request.Cookies["name"].Value.ToString()",
+                    "fengmian": first_pircture,
+                    "html": editor.txt.html(),
+                    "biaoti": biaoti,
+                    "type": $('#type').val(),
+                    "priority": $('#priority').val()
+                },
+                // 如果提交成功，返回的值为data
+                success: function (article_id) {
+                    if (article_id === "0") {
+                        alert("插入失败");
+                    }
+                    else {
+                        alert("发布成功");
+                        window.location.href = "/Home/page?articleid=" + article_id;
+                    }
+                },
+                error: function () {
+                    alert('error');
+                }
+            })
+        }, false)
+        // 保存
+        document.getElementById('btn8').addEventListener('click', function () {
+        }, false)
+        // 获取当前文章id，如果没有代表新文章，如果有则转为修改状态
+        document.getElementById('btn7').hidden = false;
+        document.getElementById('btn8').hidden = true;
+
+        var first_pircture = '';
+        // 封面图片添加
+        document.getElementById('btn1').addEventListener('click', function () {
+            document.getElementById('fp-dialog').style.display = 'block';
+        }, false);
+        $('#queding1').click(function () {
+            first_pircture = $('#fp-input').val();
+            document.getElementById('fp-view').setAttribute('src', first_pircture);
+            //alert(first_pircture);
+            document.getElementById('fp-dialog').style.display = 'none';
+        });
+
+        function ToBase64() {
+            /*转换base64*/
+            var img = document.getElementById('upload');
+            var imgFile = new FileReader();
+            if (img.files[0] === undefined) {
+                first_pircture = '';
+                return;
+            }
+            imgFile.readAsDataURL(img.files[0]);
+
+            imgFile.onload = function () {
+                first_pircture = this.result; //base64数据
+                document.getElementById('fp-view').setAttribute('src', first_pircture);
+                //alert(first_pircture);
+            }
+        }
+        $('#queding2').click(function () {
+            ToBase64();
+            document.getElementById('fp-dialog').style.display = 'none';
+        });
+        $('#quxiao').click(function () {
+            //alert(first_pircture);
+            document.getElementById('fp-dialog').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+footer {
+    margin-top: 5px;
+    height: 100px;
+    background: #272727;
+    display: block;
+}
+#footer_l {
+    position: relative;
+    left: 10%;
+    padding-top: 17px;
+    color: #cacaca;
+    font-size: 14px;
+    line-height: 32px;
+    float: left;
+}
+#footer_r {
+    position: relative;
+    right: 10%;
+    padding-top: 34px;
+    color: #cacaca;
+    font-size: 14px;
+    line-height: 32px;
+    float: right;
+}
+#footer_r ul li {
+    margin: 10px;
+    float: left;
+}

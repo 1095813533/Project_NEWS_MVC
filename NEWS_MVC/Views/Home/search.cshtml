@@ -1,0 +1,38 @@
+﻿@using NEWS_MVC.Models
+@model IEnumerable<NEWS_MVC.Models.article>
+
+    <!--搜索板块-->
+    <div class="search d1">
+
+        <form>
+            <span class="search_source">搜一搜</span>
+            <input type="text" placeholder="搜索从这里开始..." name="search_text" value=@Request["search_text"]>
+            <button type="submit"></button>
+        </form>
+    </div>
+    <!--搜索结果-->
+    <div class="main-con">
+        <ul id="new_type" class="newlist">
+            @{
+                List<article> newsmodel = Model as List<article>;
+                int i = 0;
+                foreach (var news in newsmodel)
+                {
+
+                    <li>
+                        <a href="~/Home/page?articleid=@news.articleid" target="_blank">
+                            <img src=@news.fengmian>
+                        </a>
+                        <h2>
+                            <a href="" target="_blank">@news.name</a>
+                        </h2>
+                        <h5>
+                            <div class="author">作者：@news.username</div>
+                            <div class="post-time">发布时间：@news.newstime</div>
+                        </h5>
+                    </li>
+                }
+            }
+        </ul>
+
+    </div>

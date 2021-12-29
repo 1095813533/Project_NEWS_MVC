@@ -1,0 +1,28 @@
+#backTop {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    position: fixed;
+    _position: absolute;
+    z-index: 9999;
+    bottom: 0;
+    right: 0;
+    display: none;
+    height: 200px;
+    width: 130px;
+
+    cursor: pointer
+}
+
+#backTop a {
+    display: block;
+    overflow: hidden
+}
+
+#backTop:hover {
+    opacity: 1;
+    filter: alpha(opacity=100)
+}
+
+#scrolltop {
+    display: none !important
+}
