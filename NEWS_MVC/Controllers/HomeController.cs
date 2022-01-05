@@ -111,5 +111,83 @@ namespace NEWS_MVC.Controllers
         {
             return View();
         }
+        public ActionResult search()//搜索功能
+        {
+            string input = Request["search_text"];
+            NEWS NEWSDB = new NEWS();
+            List<article> news = NEWSDB.article.Where(s => s.name.Contains(input)).Select(m => m).ToList();
+            news = news.OrderByDescending(m => m.newstime).ToList();
+            return View(news);
+        }
+        // 关闭数据验证，不然传html的值会报错
+
+        public string Base64ToImage(string base64Str, string path, string imgName)//传输图片功能
+        {
+            string filename = "";//声明一个string类型的相对路径
+            //取图片的后缀格式
+            string hz = base64Str.Split(',')[0].Split(';')[0].Split('/')[1];
+            string[] str = base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            byte[] imageBytes = Convert.FromBase64String(str[1]);
+            //读入MemoryStream对象
+            MemoryStream memoryStream = new MemoryStream(imageBytes, 0, imageBytes.Length);
+            memoryStream.Write(imageBytes, 0, imageBytes.Length);
+            filename = path + imgName + "." + hz;//所要保存的相对路径及名字
+            string tmpRootDir = Server.MapPath(path); //获取程序根目录 
+            if (!Directory.Exists(tmpRootDir))
+            {
+                Directory.CreateDirectory(tmpRootDir);
+            }
+            string imagesurl2 = tmpRootDir + imgName + "." + hz; //转换成绝对路径 
+            //  转成图片
+            Image image = Image.FromStream(memoryStream);
+            //   图片名称
+            string iname = DateTime.Now.ToString("yyMMddhhmmss");
+            image.Save(imagesurl2);  // 将图片存到本地Server.MapPath("pic\\") + iname + "." + hz
+            return filename;
+        }
+
+        [ValidateInput(false)]
+        public JsonResult Insert()
+        {
+            string html = Request["html"];
+            string name = Request["biaoti"];
+            string userid = Request["userid"];
+            string type = Request["type"];
+            string priority = Request["priority"];
+            string fengmian = Request["fengmian"];
+            string username = Request["username"];
+
+            NEWS NEWSDB = new NEWS();
+            article news = new article();
+            news.name = name;
+            news.newstime = DateTime.Now.ToLocalTime();
+            var userid_int = Convert.ToInt32(userid);
+            news.userid = userid_int;
+            news.type = type;
+            news.priority = priority[0] - '0';
+            var now = NEWSDB.article.Select(m => m).ToList<article>();
+            var q = (NEWSDB.article.Select(e => e.articleid).Max() + 1).ToString();
+            if (!(fengmian[0] == 'h' && fengmian[1] == 't' && fengmian[2] == 't' && fengmian[3] == 'p'))
+            {
+                fengmian = Base64ToImage(fengmian, "../Articles/", q);
+                //return Json(fengmian);
+            }
+            news.fengmian = fengmian;
+            news.username = username;
+            NEWSDB.article.Add(news);
+            NEWSDB.SaveChanges();
+            //return Json(fengmian);
+            FileStream fs = new FileStream(Server.MapPath("../Articles/") + q + ".html", FileMode.OpenOrCreate);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.WriteLine(html);//按行写
+            sw.Close();//关闭
+            return Json(q);
+        }
+        public ActionResult page()
+        {
+            string articleid = Request["articleid"];
+            ViewData["id"] = articleid;
+            return View();
+        }
     }
 }
