@@ -189,5 +189,70 @@ namespace NEWS_MVC.Controllers
             ViewData["id"] = articleid;
             return View();
         }
+        public ActionResult userpage()
+        {
+            NEWS NEWSDB = new NEWS();
+            string userid = Request["userid"];
+            int userid_int = Convert.ToInt32(userid);
+            List<article> userartircle = NEWSDB.article.Where(u => u.userid == userid_int).Select(m => m).ToList();
+
+            return View(userartircle);
+        }
+        public ActionResult logout()
+        {
+            HttpCookie cok = Request.Cookies["name"];
+            HttpCookie cok2 = Request.Cookies["userid"];
+            if (cok != null)
+            {
+                TimeSpan ts = new TimeSpan(-1, 0, 0, 0);
+                cok.Expires = DateTime.Now.Add(ts);//删除整个Cookie，只要把过期时间设置为现在
+                Response.AppendCookie(cok);
+            }
+            if (cok2 != null)
+            {
+                TimeSpan ts = new TimeSpan(-1, 0, 0, 0);
+                cok2.Expires = DateTime.Now.Add(ts);//删除整个Cookie，只要把过期时间设置为现在
+                Response.AppendCookie(cok2);
+            }
+            return Content("<script>location.href='Index'</script>");
+        }
+        public string changePW()//修改用户密码
+        {
+            NEWS NEWSDB = new NEWS();
+            int userid = Convert.ToInt32(Request["userid"]);
+            var users = NEWSDB.user.Where(u => u.userid == userid).SingleOrDefault();
+
+            if (users == null)
+            {
+                return "0";
+
+            }
+            else
+            {
+                users.password = Request["password"];
+                NEWSDB.SaveChanges();
+                return "1";
+                //重置成功
+            }
+        }
+        public string changeemail()//修改邮箱
+        {
+            NEWS NEWSDB = new NEWS();
+            int userid = Convert.ToInt32(Request["userid"]);
+            var users = NEWSDB.user.Where(u => u.userid == userid).SingleOrDefault();
+
+            if (users == null)
+            {
+                return "0";
+
+            }
+            else
+            {
+                users.email = Request["email"];
+                NEWSDB.SaveChanges();
+                return "1";
+                //重置成功
+            }
+        }
     }
 }
