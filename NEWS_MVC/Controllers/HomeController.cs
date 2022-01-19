@@ -254,5 +254,33 @@ namespace NEWS_MVC.Controllers
                 //重置成功
             }
         }
+        public string Delete()//删除文章
+        {
+            NEWS NEWSDB = new NEWS();
+            int articleid = Convert.ToInt32(Request["articleid"]);
+            article art = NEWSDB.article.Where(r => r.articleid == articleid).FirstOrDefault();
+
+            if (art == null)
+            {
+                return "0";
+
+            }
+            else
+            {
+
+                NEWSDB.article.Remove(art);
+                NEWSDB.SaveChanges();
+                return "1";
+                //重置成功
+            }
+        }
+        public ActionResult typesearch()
+        {
+            string input = Request["type"];
+            NEWS NEWSDB = new NEWS();
+            List<article> news = NEWSDB.article.Where(s => s.type == input).Select(m => m).ToList();
+            news = news.OrderByDescending(m => m.newstime).ToList();
+            return View(news);
+        }
     }
 }
